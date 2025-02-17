@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Keyword Management</title>
+</head>
+<body>
+  <h1>Keyword Management</h1>
+
+  <!-- Add new record form -->
+  <h2>Add New Record</h2>
+  <form method="POST" action="{{ url_for('add_keyword') }}">
+    <label for="keyword">Keyword:</label>
+    <input type="text" name="keyword" required />
+    <br />
+
+    <label for="business_problem">Business Problem:</label>
+    <input type="text" name="business_problem" required />
+    <br />
+
+    <label for="industry">Industry:</label>
+    <input type="text" name="industry" />
+    <br />
+
+    <label for="context">Context:</label>
+    <input type="text" name="context" />
+    <br />
+
+    <label for="solution">Solution:</label>
+    <textarea name="solution"></textarea>
+    <br />
+
+    <button type="submit">Add</button>
+  </form>
+
+  <hr />
+
+  <!-- Display Existing Records in a Table -->
+  <h2>Existing Records</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Keyword</th>
+        <th>Business Problem</th>
+        <th>Industry</th>
+        <th>Context</th>
+        <th>Solution</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for kw in keywords %}
+      <tr>
+        <td>{{ kw['keyword'] }}</td>
+        <td>{{ kw['business_problem'] }}</td>
+        <td>{{ kw['industry'] }}</td>
+        <td>{{ kw['context'] }}</td>
+        <td>{{ kw['solution'] }}</td>
+        <td>
+          <!-- Inline edit form -->
+          <form method="POST" 
+                action="{{ url_for('edit_keyword', keyword_id=kw['id']) }}" 
+                style="display:inline;">
+            <input type="text" name="keyword" value="{{ kw['keyword'] }}" required />
+            <input type="text" name="business_problem" value="{{ kw['business_problem'] }}" required />
+            <input type="text" name="industry" value="{{ kw['industry'] }}" />
+            <input type="text" name="context" value="{{ kw['context'] }}" />
+            <textarea name="solution">{{ kw['solution'] }}</textarea>
+            <button type="submit">Update</button>
+          </form>
+          <!-- Delete link -->
+          <a href="{{ url_for('delete_keyword', keyword_id=kw['id']) }}" style="color:red;">
+            Delete
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</body>
+</html>
